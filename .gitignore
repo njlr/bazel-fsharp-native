@@ -1,0 +1,9 @@
+bazel-*
+
+.paket
+paket-files
+
+bin
+obj
+
+*.so

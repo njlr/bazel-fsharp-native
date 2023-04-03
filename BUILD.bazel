@@ -1,0 +1,25 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@rules_dotnet//dotnet:defs.bzl", "fsharp_binary")
+
+cc_library(
+  name = "math",
+  srcs = [ "math.c" ],
+  hdrs = [ "math.h" ],
+)
+
+fsharp_binary(
+  name = "app",
+  srcs = [
+    "Program.fs",
+  ],
+  target_frameworks = [ "net6.0" ],
+  private_deps = [
+    "@paket.main//microsoft.netcore.app.ref",
+  ],
+  deps = [
+    "@paket.main//fsharp.core",
+  ],
+  data = [
+    ":math", # This is not right of course!
+  ],
+)
