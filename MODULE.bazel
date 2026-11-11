@@ -1,0 +1,14 @@
+module(name = "bazel_fsharp_native")
+
+bazel_dep(name = "platforms", version = "1.0.0")
+bazel_dep(name = "rules_cc", version = "0.2.28")
+bazel_dep(name = "rules_dotnet", version = "0.22.2")
+
+dotnet = use_extension("@rules_dotnet//dotnet:extensions.bzl", "dotnet")
+dotnet.toolchain(dotnet_version = "10.0.201")
+use_repo(dotnet, "dotnet_toolchains")
+
+register_toolchains("@dotnet_toolchains//:all")
+
+main_extension = use_extension("//deps:paket.main_extension.bzl", "main_extension")
+use_repo(main_extension, "paket.main")

@@ -1,6 +1,6 @@
-﻿open System.Runtime.InteropServices
+open System.Runtime.InteropServices
 
-[<DllImport("libmath.so", EntryPoint="double_it")>]
+[<DllImport("math", EntryPoint = "double_it")>]
 extern int doubleIt(int x)
 
 [<EntryPoint>]

@@ -1,6 +1,5 @@
 STORAGE: NONE
-RESTRICTION: || (== net6.0) (== netstandard2.1)
+RESTRICTION: == net10.0
 NUGET
   remote: https://api.nuget.org/v3/index.json
-    FSharp.Core (6.0.7)
-    Microsoft.NetCore.App.Ref (6.0.15)
+    FSharp.Core (10.1.201)

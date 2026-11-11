@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <!-- FSharp.Core comes from Paket (paket.references) -->
+    <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Copy the native library (built with `cc`, see README) next to app.dll, where
+         [<DllImport("math")>] looks first. Globs so that whichever one exists is used. -->
+    <None Include="libmath.so*;libmath.dylib*;math.dll*" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <Import Project=".paket\Paket.Restore.targets" />
+</Project>

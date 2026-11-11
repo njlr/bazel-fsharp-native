@@ -1,25 +1,35 @@
-load("@rules_cc//cc:defs.bzl", "cc_library")
-load("@rules_dotnet//dotnet:defs.bzl", "fsharp_binary")
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_shared_library")
+load("@rules_dotnet//dotnet:defs.bzl", "fsharp_binary", "import_library")
 
 cc_library(
-  name = "math",
-  srcs = [ "math.c" ],
-  hdrs = [ "math.h" ],
+    name = "math",
+    srcs = ["math.c"],
+    hdrs = ["math.h"],
+)
+
+# Builds libmath.so (Linux) / libmath.dylib (macOS) / math.dll (Windows).
+cc_shared_library(
+    name = "math_shared",
+    shared_lib_name = select({
+        "@platforms//os:windows": "math.dll",
+        "@platforms//os:macos": "libmath.dylib",
+        "//conditions:default": "libmath.so",
+    }),
+    deps = [":math"],
+)
+
+import_library(
+    name = "math_native",
+    library_name = "math",
+    native = [":math_shared"],
 )
 
 fsharp_binary(
-  name = "app",
-  srcs = [
-    "Program.fs",
-  ],
-  target_frameworks = [ "net6.0" ],
-  private_deps = [
-    "@paket.main//microsoft.netcore.app.ref",
-  ],
-  deps = [
-    "@paket.main//fsharp.core",
-  ],
-  data = [
-    ":math", # This is not right of course!
-  ],
+    name = "app",
+    srcs = ["Program.fs"],
+    target_frameworks = ["net10.0"],
+    deps = [
+        ":math_native",
+        "@paket.main//fsharp.core",
+    ],
 )
